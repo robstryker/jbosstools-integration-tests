@@ -3,10 +3,13 @@ package org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class DetectWildFly10 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "wildfly-10.0";

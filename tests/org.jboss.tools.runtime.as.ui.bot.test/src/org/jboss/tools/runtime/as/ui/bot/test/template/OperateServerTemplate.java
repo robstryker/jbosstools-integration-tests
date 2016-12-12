@@ -6,6 +6,8 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.fail;
 
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
 import org.jboss.ide.eclipse.as.reddeer.matcher.ServerConsoleContainsNoExceptionMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
@@ -57,6 +59,18 @@ public abstract class OperateServerTemplate {
 	@Test
 	public void operateServer() {
 		serverIsPresentInServersView();
+		
+		if( !versionCanLaunch()) {
+			serversView.getServer(getServerName()).start();
+			final String state = "Stopped";
+			new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.LONG);
+			new WaitUntil(new ServerHasState(state));
+			LOGGER.step("Deleting server");
+			deleteServer();
+			return;
+		}
+
+		
 		new WaitWhile(new JobIsRunning());
 		new WaitUntil(new ServerHasState("Stopped"));
 		LOGGER.step("Starting server");
@@ -131,9 +145,15 @@ public abstract class OperateServerTemplate {
 		final String state = "Started";
 		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.LONG);
 		new WaitUntil(new ServerHasState(state));
-		
+
 		assertNoException("Starting server");
 		assertServerState("Starting server", state);
+	}
+	
+	protected boolean versionCanLaunch() {
+		double d = jre.getJREVersion();
+		// TODO fix this
+		return d == 1.8;
 	}
 
 	public void restartServer() {

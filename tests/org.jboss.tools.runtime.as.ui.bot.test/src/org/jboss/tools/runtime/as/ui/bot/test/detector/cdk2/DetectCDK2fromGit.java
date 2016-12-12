@@ -10,7 +10,6 @@ import java.util.List;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.jboss.tools.common.reddeer.utils.FileUtils;
-import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 import org.junit.BeforeClass;
@@ -26,6 +25,12 @@ public class DetectCDK2fromGit extends DetectRuntimeTemplate {
 		if (GIT_REPOSITORY_URI==null){
 			fail("\"jbt.cdk_git_uri\" property was not set.");
 		}
+		
+		if( GIT_REPOSITORY_URI.startsWith("${") && GIT_REPOSITORY_URI.endsWith("}")) {
+			fail("\"jbt.cdk_git_uri\" property was not set.");
+		}
+		
+		System.out.println("Cloning repo: " + GIT_REPOSITORY_URI);
 		File gitRepositoryDir = new File("target/cdk-git");
 		if (gitRepositoryDir.exists()){
 			try {
