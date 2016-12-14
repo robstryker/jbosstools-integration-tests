@@ -14,7 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.eclipse,
  org.eclipse.ui,
  org.eclipse.ui.editors,
- org.jboss.tools.common.model.ui,
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
